@@ -1,0 +1,99 @@
+package rules
+
+
+import com.chat.bot.pao.model.dto.ChatDTO; 
+
+
+global com.chat.bot.pao.model.dto.ChatDTO chat
+
+rule "Your First Rule"
+
+    when
+        chatInstance:ChatDTO(solicitud == "hola");
+        
+    then
+		chat.setRespuesta("Hola mi nombre es books. ¿Como te llamas?");
+end
+
+rule "nombre"
+
+    when
+        chatInstance:ChatDTO(solicitud == "paola"||solicitud == "andrea"||solicitud == "julian"||solicitud == "sofia"||solicitud == "alberto"||solicitud == "ruben"
+        ||solicitud == "raul"||solicitud == "damian"||solicitud == "domenico"||solicitud == "hermen"||solicitud == "jose"||solicitud == "josé"||solicitud == "ricardo"
+        ||solicitud == "adonis"||solicitud == "leandro"||solicitud == "leonardo"||solicitud == "francisco"||solicitud == "ana"||solicitud == "maria"||solicitud == "camila"
+        ||solicitud == "veronica"||solicitud == "sandra"||solicitud == "johana"||solicitud == "ruben"||solicitud == "Ruben"||solicitud == "elisabeth"||solicitud == "elizabeth"||solicitud == "eliza"
+        ||solicitud == "valentina"||solicitud == "lucas"||solicitud == "damaso"||solicitud == "hermenegildo"||solicitud == "daniela"||solicitud == "laura"||solicitud == "enrique");
+        
+    then
+		chat.setRespuesta("Mucho gusto, que deseas buscar");
+end
+
+rule "inicio"
+
+    when
+        chatInstance:ChatDTO(solicitud == "libros" || solicitud == "libro");
+        
+    then
+		chat.setRespuesta("Que tipo libro o libros buscas, me puedes indicar el genero del libro o nombre del libro");
+end
+
+rule "genero"
+
+    when
+        chatInstance:ChatDTO(solicitud == "libros de ciencia ficción"||solicitud == "ficción"||solicitud == "ciencia"||solicitud == "romance"||solicitud == "historicos"||solicitud == "historia"
+         ||solicitud == "ciencia ficcion"||solicitud == "romantica" || solicitud == "drama" || solicitud == "libros dramaticos" || solicitud == "libros educativos"
+         ||solicitud == "educación" || solicitud == "educacion" || solicitud == "sistemas" || solicitud == "informatica"
+         ||solicitud == "novelas de drama" || solicitud == "poesia" || solicitud == "cuentos infantiles" || solicitud == "infantiles"
+         ||solicitud == "politicos" || solicitud == "libros sobre politica" || solicitud == "eroticos" || solicitud == "romantica"
+		 ||solicitud == "misterio" ||solicitud == "triller" ||solicitud == "romance"||solicitud == "erotica");
+         
+        
+    then
+		chat.setRespuesta("Te muestro una lista de libros de acuerdo a tu información");
+end
+
+rule "preferencia"
+
+    when
+        chatInstance:ChatDTO(solicitud == "no" || solicitud == "no tengo preferencia");
+        
+    then
+		chat.setRespuesta("Puedes visualizar una lista de libros de acuerdo a tu solicitud, si deseas puede realizar una nueva busqueda");
+end	
+
+rule "nombrelibro"
+    when
+        chatInstance:ChatDTO(solicitud == "La piedra filosofal" || solicitud =="la novia gitana"|| solicitud =="progenie"
+        || solicitud =="Mensajes desde el lago "|| solicitud =="Cartas a una extraña"|| solicitud =="Una de las tres"|| solicitud =="Rescate gris"|| solicitud =="Redención"
+        || solicitud =="La camara secreta"|| solicitud =="El prisionero de azcaban"|| solicitud =="progenie"|| solicitud =="progenie"|| solicitud =="progenie"
+        || solicitud =="progenie"|| solicitud =="progenie"|| solicitud =="progenie"|| solicitud =="progenie"|| solicitud =="progenie"
+        || solicitud =="progenie"|| solicitud =="progenie"|| solicitud =="progenie"|| solicitud =="progenie"|| solicitud =="progenie"
+        || solicitud =="progenie"|| solicitud =="progenie"|| solicitud =="progenie"|| solicitud =="progenie"|| solicitud =="progenie");
+        
+    then
+		chat.setRespuesta("Puedes visualizar una lista de libros de acuerdo a tu solicitud, si deseas puede realizar una nueva busqueda");
+	
+end	
+
+rule "autor" 	
+ 	when
+        chatInstance:ChatDTO(solicitud == "jk-rouling"||solicitud == "dan brown"
+        ||solicitud == "fernando gamboa"||solicitud == "mercedes pinto maldonado"||solicitud == "susana martin gijon"
+        ||solicitud == "fernando"||solicitud == "mercedes pinto maldonado	"||solicitud == "mercedes"
+        ||solicitud == "pinto"||solicitud == "maldonado"||solicitud == "jk"
+        ||solicitud == "rouling"||solicitud == "carmen mola"||solicitud == "carmen"
+        ||solicitud == "megan maxwel"||solicitud == "alice kellen"||solicitud == "mayte esteban"
+        ||solicitud == "susana martinez"||solicitud == "noemi caskell" ||solicitud == "penelope ward");
+        
+    then
+		chat.setRespuesta("Quieres realizar la busqueda");
+
+end	
+rule "mostrardatos" 	
+ 	when
+        chatInstance:ChatDTO(solicitud == "si"|| solicitud == "si quiero" );
+        
+    then
+		chat.setRespuesta("Puedes visualizar una lista de libros de acuerdo a tu solicitud");
+
+end	

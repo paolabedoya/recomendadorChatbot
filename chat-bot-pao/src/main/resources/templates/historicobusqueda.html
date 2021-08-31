@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html 	xmlns="http://www.w3.org/1999/xhtml" 
+		xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<title>Chat Boot Pao</title>
+		<link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/navbar-static/">
+		<link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}">
+		<link rel="stylesheet" type="text/css" th:href="@{/css/navbar-top.css}">
+		<link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+		<link rel="stylesheet" type="text/css" th:href="@{/css/chat.css}">
+		<script th:src="@{/js/jquery/3.3.1/jquery.min.js}"></script>	
+		<script th:src="@{/js/consultaLibro.js}"></script>	
+
+  </head>
+  <body>
+
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
+      <IMG  th:src="@{/img/libros.png}" width="50" height="50">
+  <a class="navbar-brand" href="/dairis/">&nbsp &nbsp &nbsp Recomendador de libros</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarCollapse">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="/dairis/">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/dairis/consultar/historial">Historico de busquedas</a>
+      </li>
+      
+    </ul>
+    
+  </div>
+</nav>
+
+<div class="container">
+<form  id="formchat" th:object="${chatDto}">
+
+  
+    <div class="col" th:fragment="listResult" id="listResult">
+      Ultimas Busquedas Realizadas
+      <table class="table">
+         <thead class="thead-light">
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Libro</th>
+                <th scope="col">Autor</th>
+                <th scope="col">Genero</th>
+                <th scope="col">Fecha Consulta</th>
+              </tr>
+            </thead>
+            <tbody>
+	            <tr th:each="libro, rowStat : ${listHistorial}">
+	            	<td  style="vertical-align: middle;" th:text="${rowStat.count}"></td>
+	            	<td style="vertical-align: middle;" th:text="${libro.nombreLibro}"></td>
+	            	<td style="vertical-align: middle;" th:text="${libro.autor}"></td>
+	            	<td style="vertical-align: middle;" th:text="${libro.genero}"></td>
+	            	<td style="vertical-align: middle;" th:text="${libro.fechaHoraConsultaTemp}"></td>
+	            </tr>
+            </tbody>
+          </table>
+    </div>
+
+
+</form>
+
+  </div>
+
+ <!-- 
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+      <script>window.jQuery || document.write('<script src="js/vendor/jquery.slim.min.js"><\/script>')</script><script src="../assets/dist/js/bootstrap.bundle.min.js"></script> -->
+
+</html>

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html 	xmlns="http://www.w3.org/1999/xhtml" 
+		xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<title>Chat Boot Pao</title>
+		<link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/navbar-static/">
+		<link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}">
+		<link rel="stylesheet" type="text/css" th:href="@{/css/navbar-top.css}">
+		<link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+		<link rel="stylesheet" type="text/css" th:href="@{/css/chat.css}">
+		<script th:src="@{/js/jquery/3.3.1/jquery.min.js}"></script>	
+		<script th:src="@{/js/consultaLibro.js}"></script>	
+
+  </head>
+  <body>
+
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
+      <IMG  th:src="@{/img/libros.png}" width="50" height="50">
+  <a class="navbar-brand" href="/dairis/">&nbsp &nbsp &nbsp Recomendador de libros</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarCollapse">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="/dairis/">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+         <a class="nav-link" href="/dairis/consultar/historial">Historico de busquedas</a>
+      </li>
+      
+    </ul>
+    
+  </div>
+</nav>
+<!--
+<div class="container-sm">
+     <div class="input-group mb-3">
+  <input type="text" class="form-control" placeholder="Consultar libros" aria-label="Recipient's username" aria-describedby="button-addon2">
+  <div class="input-group-append">
+    <button class="btn btn-success" type="button" id="button-addon2">Buscar</button>
+  </div>
+</div>
+</div> -->
+
+<div class="container">
+<form  id="formchat" th:object="${chatDto}">
+
+  <div class="row" >
+    <div class="col">
+      <div class="chat_window">
+    <div class="top_menu">
+        <div class="buttons">
+            <div class="button close"></div>
+            <div class="button minimize"></div>
+            <div class="button maximize"></div>
+        </div>
+        <div class="title">Chat</div>
+    </div>
+    <ul class="messages"></ul>
+    <div></div>
+    <div class="bottom_wrapper clearfix">
+        <div class="message_input_wrapper">
+            <input class="message_input" placeholder="Escribeme aqui..." th:field="*{solicitud}" required="required"/>
+        </div>
+        <div class="send_message">
+            <div class="icon"></div>
+            <div class="text">Enviar</div>
+        </div>
+    </div>
+</div>
+<div class="message_template">
+    <div class="message">
+        <div class="avatar"></div>
+        <div class="text_wrapper">
+            <div class="text"></div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+</form>
+<div th:fragment="fragment" id="fragment">
+	<input type="hidden" th:value="*{respuesta}" id="inputMessageChat">
+</div>
+</div>
+<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+$( document ).ready(function() {
+	$("input").keydown(function (e){
+		   // Capturamos qué telca ha sido
+		   var keyCode= e.which;
+		   // Si la tecla es el Intro/Enter
+		   if (keyCode == 13){
+		     // Evitamos que se ejecute eventos
+		     event.preventDefault();
+		     // Devolvemos falso
+		     return false;
+		   }
+		 });
+	
+	
+  (function () {
+	  console.log('sssssssssssssssssssssss')
+	  
+     var Message;
+     Message = function (arg) {
+         this.text = arg.text, this.message_side = arg.message_side;
+         this.draw = function (_this) {
+             return function () {
+                 var $message;
+                 $message = $($('.message_template').clone().html());
+                 $message.addClass(_this.message_side).find('.text').html(_this.text);
+                 $('.messages').append($message);
+                 return setTimeout(function () {
+                     return $message.addClass('appeared');
+                 }, 0);
+             };
+         }(this);
+         return this;
+     };
+     var mensaje_bot = $('#inputMessageChat').val();
+	 	var $messages = $('.messages');
+	    var message_bot;
+		if(mensaje_bot != '') {
+			message_bot = new Message({
+	             text: mensaje_bot,
+	             message_side: 'left'
+	         });
+			$messages.innerHTML = '<div>'+ mensaje_bot +'</div>';
+			message_bot.draw();
+			console.log(mensaje_bot);
+			$messages.animate({ scrollTop: $messages.prop('scrollHeight') }, 300);
+		}
+     $(function () {
+         var getMessageText, message_side, sendMessage;
+        	message_side = 'right';
+         	getMessageText = function () {
+             var $message_input;
+             $message_input = $('.message_input');
+            var  $messages = $('.messages');
+            var message_usuario, message_bot;
+             var parametro = $("#formchat").serialize();
+	         $.ajax({
+        		type : 'POST',
+        		url : '/dairis/chat',
+        		data : parametro,
+        		success : function(data) {
+        			$('#fragment').replaceWith(data);
+        			var mensaje_usuario = $message_input.val();
+        			message_usuario = new Message({
+                         text: mensaje_usuario,
+                         message_side: 'right'
+                     });
+        			$messages.innerHTML = '<div>'+ mensaje_usuario +'</div>';
+        			message_usuario.draw();
+        			console.log($message_input.val());
+        			var mensaje_bot = $('#inputMessageChat').val();
+        			if(mensaje_bot != '') {
+        				message_bot = new Message({
+                             text: mensaje_bot,
+                             message_side: 'left'
+                         });
+	        			$messages.innerHTML = '<div>'+ mensaje_bot +'</div>';
+	        			message_bot.draw();
+        				console.log(mensaje_bot);
+        			}	
+	        		$('.message_input').val('');
+	        		$messages.animate({ scrollTop: $messages.prop('scrollHeight') }, 300);
+	        		buscarRecomendaciones(mensaje_usuario);
+        		},
+        		error : function(data){
+        			var informacionError = data.responseText;
+        			var jsonResponse = JSON.parse(informacionError);
+        		}
+	        });
+         };
+         $('.send_message').click(function (e) {
+             return getMessageText();
+         });
+     });
+     function buscarRecomendaciones(mensaje_usuario){
+    	 var parametro = $("#formConsultaLibro").serialize();
+    		var url = '/dairis/consulta/libro';
+    		var parampantalla = 'send';
+    		url = url+ '/'+ mensaje_usuario + '/' + parampantalla;
+    		$.ajax({
+    			type : 'GET',
+    			url : url,
+    			data : parametro,
+    			success : function(data) {
+    				console.log(data);
+    				$('#listResult').replaceWith(data);
+    			},
+    			error : function(data){
+    				var informacionError = data.responseText;
+    				var jsonResponse = JSON.parse(informacionError);
+    			}
+    		});
+     }
+ }.call(this));
+  
+  
+});
+</script>
+    <div class="col" th:fragment="listResult" id="listResult">
+      LISTADO DE RECOMENDACIONES
+      <table class="table">
+         <thead class="thead-light">
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Libro</th>
+                <th scope="col">Autor</th>
+                <th scope="col">Libreria</th>
+                <th scope="col">Precio</th>
+              </tr>
+            </thead>
+            <tbody>
+	            <tr th:each="libro, rowStat : ${lstLibros}">
+	            	<td  style="vertical-align: middle;" th:text="${rowStat.count}"></td>
+	            	<td style="vertical-align: middle;" th:text="${libro.nombreLibro}"></td>
+	            	<td style="vertical-align: middle;" th:text="${libro.autor}"></td>
+	            	<td style="vertical-align: middle;" th:text="${libro.libreria}"></td>
+	            	<td style="vertical-align: middle;" th:text="${libro.precio}"></td>
+	            </tr>
+            </tbody>
+          </table>
+    </div>
+
+
+
+
+  </div>
+
+ <!-- 
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+      <script>window.jQuery || document.write('<script src="js/vendor/jquery.slim.min.js"><\/script>')</script><script src="../assets/dist/js/bootstrap.bundle.min.js"></script> -->
+
+</html>

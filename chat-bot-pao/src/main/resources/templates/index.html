@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+	
+<head>
+<meta charset="utf-8">
+
+<link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/navbar-static/">
+
+    <!-- Bootstrap core CSS -->
+		<link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}">
+		<script th:src="@{/js/jquery/3.3.1/jquery.min.js}"></script>	
+		<script th:src="@{/js/consultaLibro.js}"></script>	
+	<!-- Custom styles for this template -->
+		<link rel="stylesheet" type="text/css" th:href="@{/css/navbar-top.css}">
+		<link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+    	
+<title>Chat Boot Pao</title>
+
+
+</head>
+<body>
+
+<script type="text/javascript">
+$( document ).ready(function() {
+	$("input").keydown(function (e){
+		   // Capturamos qué telca ha sido
+		   var keyCode= e.which;
+		   // Si la tecla es el Intro/Enter
+		   if (keyCode == 13){
+		     // Evitamos que se ejecute eventos
+		     event.preventDefault();
+		     // Devolvemos falso
+		     return false;
+		   }
+		 });
+});
+</script>
+   <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
+      <IMG src="img/libros.png" width="50" height="50">
+  <a class="navbar-brand" href="/dairis/">&nbsp &nbsp &nbsp Recomendador de libros</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarCollapse">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="/dairis/">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+         <a class="nav-link" href="/dairis/consultar/historial">Historico de busquedas</a>
+      </li>
+      
+    </ul>
+    
+  </div>
+</nav>
+		
+ <div class="container">
+   <div class="mb-3">
+		<form id="formConsultaLibro" th:action="@{/consulta/libro}" method="get">
+		  <div class="row">
+		  <div class="col">
+			  <input type="text" class="form-control" placeholder="Consultar libros" id="textSearch">
+		  </div>
+		  <div class="col input-group-append">
+		    <button class="btn btn-success" type="button" onclick="consultarLibro()" id="button-addon2">Buscar</button>
+		  </div>
+		  </div>
+		</form>
+	</div>
+</div>
+
+
+  <div class="container">
+ <div class="card-deck">
+  <div class="card" th:each="libro, rowStat : ${listRecomendados}">
+    <img th:src="${libro.foto eq null ? 'img/Sin_foto.svg' : libro.foto}" class="card-img-top" alt="...">
+    <div class="card-body">
+      <h5 class="card-title" th:text="${libro.nombreLibro}"></h5>
+      <p class="card-text"></p>
+      <!--  <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>-->
+    </div>
+  </div>
+<!--   <div class="card"> -->
+<!--     <img src="img/jsierra.jpg" class="card-img-top" alt="..."> -->
+<!--     <div class="card-body"> -->
+<!--       <h5 class="card-title">El mensaje de pandora</h5> -->
+<!--       <p class="card-text"></p> -->
+<!--        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p> -->
+<!--     </div> -->
+<!--   </div> -->
+<!--   <div class="card"> -->
+<!--     <img src="img/nieve.jpg" class="card-img-top" alt="..."> -->
+<!--     <div class="card-body"> -->
+<!--       <h5 class="card-title">La chica de la nieve</h5> -->
+<!--       <p class="card-text"></p> -->
+<!--        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p> -->
+<!--     </div> -->
+<!--   </div> -->
+</div>
+</div>
+  
+  
+</body>
+</html>
